@@ -15,8 +15,6 @@ class CreateMoneymovesTable extends Migration
     {
         Schema::create('money_moves', function (Blueprint $table) {
             $table->id();
-            //$table->integer('user_id')->unsigned()->required();
-            $table->integer('coin_id')->unsigned()->required();
             $table->string('tag')->required();
             $table->enum('type',['income','outflow']);
             $table->float('amount', 8, 2)->required();
@@ -26,8 +24,10 @@ class CreateMoneymovesTable extends Migration
                   ->constrained('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
-            /*$table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('coin_id')->references('id')->on('coins');*/
+            $table->foreignId('coin_id')
+                  ->constrained('coins')
+                  ->onUpdate('cascade')
+                  ->onDelete('cascade');
         });
     }
 
