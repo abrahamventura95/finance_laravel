@@ -31,3 +31,16 @@ Route::group([
         Route::get('user', 'AuthController@user');
     });
 });
+
+Route::group([
+    'prefix' => 'user'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::get('all', 'UserController@users');
+        Route::get('{id}', 'UserController@show');
+        Route::put('{id}', 'UserController@edit');
+        Route::delete('{id}', 'UserController@delete');
+    });
+});
