@@ -76,3 +76,18 @@ Route::group([
         Route::delete('{id}', 'SaleController@delete');
     });
 });
+
+//Coins
+Route::group([
+    'prefix' => 'coin'
+], function () {
+    Route::get('', 'CoinController@get');
+    
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('', 'CoinController@create');
+        Route::put('{id}', 'CoinController@edit');
+        Route::delete('{id}', 'CoinController@delete');
+    });
+});
