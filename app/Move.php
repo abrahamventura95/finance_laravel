@@ -19,6 +19,14 @@ class Move extends Model
      * @var array
      */
     protected $fillable = [
-        'coin_id', 'user_id', 'tag', 'type', 'amount'
+         'tag', 'type', 'amount'
+    ];
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'user_id', 'coin_id',
     ];
 }

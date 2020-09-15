@@ -14,10 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-/*Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});*/
-
+//Auth
 Route::group([
     'prefix' => 'auth'
 ], function () {
@@ -32,6 +29,7 @@ Route::group([
     });
 });
 
+//User
 Route::group([
     'prefix' => 'user'
 ], function () {
@@ -42,5 +40,22 @@ Route::group([
         Route::get('{id}', 'UserController@show');
         Route::put('{id}', 'UserController@edit');
         Route::delete('{id}', 'UserController@delete');
+    });
+});
+
+//Money Moves
+Route::group([
+    'prefix' => 'move'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('', 'MoveController@create');
+        Route::get('', 'MoveController@get');
+        Route::get('date/{date}', 'MoveController@getByDate');
+        Route::get('tag/{tag}', 'MoveController@getByTag');
+        Route::get('{id}', 'MoveController@show');
+        Route::put('{id}', 'MoveController@edit');
+        Route::delete('{id}', 'MoveController@delete');
     });
 });
