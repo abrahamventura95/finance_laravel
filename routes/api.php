@@ -59,3 +59,20 @@ Route::group([
         Route::delete('{id}', 'MoveController@delete');
     });
 });
+
+//Money Sales
+Route::group([
+    'prefix' => 'sale'
+], function () {
+    Route::group([
+      'middleware' => 'auth:api'
+    ], function() {
+        Route::post('', 'SaleController@create');
+        Route::get('', 'SaleController@get');
+        Route::get('date/{date}', 'SaleController@getByDate');
+        Route::get('tag/{tag}', 'SaleController@getByTag');
+        Route::get('{id}', 'SaleController@show');
+        Route::put('{id}', 'SaleController@edit');
+        Route::delete('{id}', 'SaleController@delete');
+    });
+});
