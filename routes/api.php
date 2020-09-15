@@ -26,6 +26,7 @@ Route::group([
     ], function() {
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
+        Route::get('balance', 'MoveController@balance');
     });
 });
 

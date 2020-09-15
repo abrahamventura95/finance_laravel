@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Move;
+use App\Sale;
 
 class MoveController extends Controller
 {
@@ -123,5 +124,35 @@ class MoveController extends Controller
 	            'message' => 'Unauthorized to deleted!'
 	        ], 401);
     	}
+    }
+
+    /**
+     * Show all user`s moves
+     */
+    public function balance(Request $request)
+    {
+        $incomeMoves = Move::SelectRaw('sum(amount) as val')
+                           ->where('user_id','=',auth()->user()->id)
+                           ->where('type','=','income')
+                           ->get(1);
+        $incomeSales = Sale::SelectRaw('sum(amount) as val')
+                           ->where('user_id','=',auth()->user()->id)
+                           ->where('type','=','income')
+                           ->get(1);
+        $outflowMoves = Move::SelectRaw('sum(amount) as val')
+                           ->where('user_id','=',auth()->user()->id)
+                           ->where('type','=','outflow')
+                           ->get(1);
+        $outflowSales = Sale::SelectRaw('sum(amount) as val')
+                           ->where('user_id','=',auth()->user()->id)
+                           ->where('type','=','outflow')
+                           ->get(1);
+        $result = array('moves(+):' => $incomeMoves[0]->val, 
+                   'sales(+):' => $incomeSales[0]->val, 
+                   'moves(-):' => $outflowMoves[0]->val, 
+                   'sales(-):' => $outflowSales[0]->val,
+                    'total:'  => $incomeSales[0]->val + $incomeMoves[0]->val 
+                                 - $outflowSales[0]->val - $outflowMoves[0]->val);                   
+        return response()->json($result);
     }
 }
